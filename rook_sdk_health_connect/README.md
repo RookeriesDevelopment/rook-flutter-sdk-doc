@@ -612,4 +612,4 @@ Future<void> syncTodayPhysicalEvents() async {
 ## Other resources
 
 * See a complete list of rook-sdk-health-connect methods in
-  the [API Reference]()
+  the [API Reference](https://pub.dev/documentation/rook_sdk_health_connect/latest/)
