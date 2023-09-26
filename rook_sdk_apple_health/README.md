@@ -167,6 +167,32 @@ void clearUserID() {
 }
 ```
 
+#### User timezone
+
+Every time `updateUserID` completes successfully the timezone information will be updated, you can see the result of the
+operation in the logs, when success you will see `Timezone information updated`
+otherwise `Failed to update timezone information with error:`
+
+In most cases the above behavior is more than enough. If you need to update the timezone information manually
+call `syncUserTimeZone`:
+
+```dart
+void updateTimeZoneInformation() {
+  logger.info('Updating user timezone...');
+
+  rookConfigurationManager.syncUserTimeZone().then((_) {
+    logger.info('User timezone updated successfully');
+  }).catchError((exception) {
+    final error = switch (exception) {
+      _ => exception.toString(),
+    };
+
+    logger.info('Error updating user timezone:');
+    logger.info(error);
+  });
+}
+```
+
 ### Request permissions
 
 Create a `AHRookHealthPermissionsManager` instance:
