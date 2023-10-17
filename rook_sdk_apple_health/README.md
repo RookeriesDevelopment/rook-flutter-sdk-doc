@@ -23,7 +23,7 @@ This package enables apps to extract and upload data from Health Connect.
 flutter pub add rook_sdk_apple_health
 ```
 
-### Environment
+### Development environment
 
 This package was developed with the following sdk constraints:
 
@@ -92,6 +92,23 @@ permission request dialog.
 <string>This app requires permission to write workout data to HealthKit.</string>
 ```
 
+### Environment
+
+The `RookEnvironment` enum allows to quickly configure the behaviour of **rook-sdk**, e.g. the
+api used to communicate with ROOK servers.
+
+Available environments:
+
+* sandbox ➞ Use this during your app development process.
+* production ➞ Use this ONLY when your app is published to the PlayStore.
+
+You can use the `kDebugMode` property of you app to configure the environment:
+
+```dart
+
+const environment = kDebugMode ? RookEnvironment.sandbox : RookEnvironment.production;
+```
+
 ## Usage
 
 ### Initialize
@@ -105,16 +122,19 @@ final rookConfigurationManager = AHRookConfigurationManager();
 
 Set a configuration and initialize. The `RookConfiguration` requires the following parameters:
 
-* An [apiURL](https://docs.tryrook.io/docs/Definitions#api_url) without HTTPS.
-* A [clientUUID](https://docs.tryrook.io/docs/Definitions#client_uuid)
-* A [clientPassword](https://docsbeta.tryrook.io/docs/Definitions#client_password)
+* [clientUUID](https://docs.tryrook.io/docs/Definitions#client_uuid)
+* [clientPassword](https://docsbeta.tryrook.io/docs/Definitions#client_password)
+* [Environment](#environment)
 
 ```dart
 void initialize() {
+  const environment =
+  kDebugMode ? RookEnvironment.sandbox : RookEnvironment.production;
+
   final rookConfiguration = RookConfiguration(
-    rookUrl,
-    clientUUID,
-    clientPassword,
+    Secrets.clientUUID,
+    Secrets.clientPassword,
+    environment,
   );
   
   rookConfigurationManager.setConfiguration(rookConfiguration);
