@@ -44,11 +44,15 @@ In your build.gradle (app) set your min and target sdk version like below:
 
 ```groovy
 minSdk 26
-targetSdk 33
+targetSdk 34
 ```
 
 * Health Connect will only work with devices of a minSdk 28 or later. The `minSdk 26` is to keep
   compatibility with other Rook SDKs that can be used with older SDKs.
+
+#### Obfuscation
+
+If you are using obfuscation consider the following:
 
 In the app folder create a **proguard-rules.pro** file and add the following:
 
@@ -66,7 +70,28 @@ buildTypes {
 }
 ```
 
-In your **AndroidManifest.xml**, add a query for Health Connect:
+In your gradle.properties (Project level) add the following to disable R8 full mode:
+
+```properties
+android.enableR8.fullMode=false
+```
+
+If you want to enable full mode add the following rules to proguard-rules.pro:
+
+```text
+# Keep generic signature of Call, Response (R8 full mode strips signatures from non-kept items).
+-keep,allowobfuscation,allowshrinking interface retrofit2.Call
+-keep,allowobfuscation,allowshrinking class retrofit2.Response
+
+# With R8 full mode generic signatures are stripped for classes that are not
+# kept. Suspend functions are wrapped in continuations where the type argument
+# is used.
+-keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
+```
+
+#### Manifest
+
+In your **AndroidManifest.xml** add a query for Health Connect
 
 ```xml
 
@@ -115,11 +140,29 @@ Health Connect permissions action:
 
 ```xml
 
-<activity android:name=".MainActivity">
-    <intent-filter>
-        <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
-    </intent-filter>
-</activity>
+<application>
+    <activity android:name=".MainActivity">
+        <!-- For supported versions through Android 13, create an activity to show the rationale
+             of Health Connect permissions once users click the privacy policy link. -->
+        <intent-filter>
+            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+        </intent-filter>
+    </activity>
+
+    <!-- For versions starting Android 14, create an activity alias to show the rationale
+         of Health Connect permissions once users click the privacy policy link. -->
+    <activity-alias
+        android:name="ViewPermissionUsageActivity"
+        android:exported="true"
+        android:permission="android.permission.START_VIEW_PERMISSION_USAGE"
+        android:targetActivity=".MainActivity">
+
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+            <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+        </intent-filter>
+    </activity-alias>
+</application>
 ```
 
 Finally, you to listen when your app is launched from said intent you can code
@@ -131,7 +174,7 @@ find an example of the second approach in our demo app.
 
 When you are developing with the Health Connect SDK data access is unrestricted. In order to have data access when your
 app is launched to the PlayStore you MUST complete the Developer Declaration Form, more
-information [Here](https://developer.android.com/health-and-fitness/guides/health-connect/frequently-asked-questions#request-access).
+information [Here](https://developer.android.com/health-and-fitness/guides/health-connect/publish/request-access).
 
 ### Environment
 
@@ -319,15 +362,17 @@ void checkAvailability() {
 
 ### Check permissions
 
-There are dedicated functions for each [Health Pillar](https://docs.tryrook.io/docs/Definitions#health-data-pillars)
-(Sleep, Physical, and Body) to check permissions. These functions follow the convention: `has_data_type_Permissions`
+To check permissions call `checkPermissions` and provide a `HealthPermission`, available permissions:
 
-You can also call `hasAllPermissions` to check if your app has all the permissions required to
-extract data from all health pillars.
+* SLEEP - [Sleep Health](https://docs.tryrook.io/docs/Definitions/#sleep-health-data-pillar) Data Pillar permissions.
+* PHYSICAL - [Physical Health](https://docs.tryrook.io/docs/Definitions/#body-health-data-pillar) Data Pillar
+  permissions.
+* BODY - [Body Health](https://docs.tryrook.io/docs/Definitions/#body-health-data-pillar) Data Pillar permissions.
+* ALL - All Health Data Pillar permissions.
 
 ```dart
 void checkPermissions() {
-  rookHealthPermissionsManager.hasAllPermissions().then((hasPermissions) {
+  rookHealthPermissionsManager.checkPermissions(HealthPermission.all).then((hasPermissions) {
     final string = hasPermissions
         ? 'All permissions are granted! You can skip the next 2 steps'
         : 'There are missing permissions. Please grant them';
@@ -348,27 +393,18 @@ void checkPermissions() {
 
 ### Request permissions
 
-There are dedicated functions for each [Health Pillar](https://docs.tryrook.io/docs/Definitions#health-data-pillars)
-(Sleep, Physical and Body) to request permissions. These functions follow the
-convention: `request_data_type_Permissions`
-
-You can also call `requestAllPermissions` to request all health pillar permissions.
+To request permissions call `launchPermissionsRequest` providing a `HealthPermission`.
 
 ```dart
 void requestPermissions() {
   logger.info("Requesting all permissions...");
 
-  rookHealthPermissionsManager.requestAllPermissions().then((_) {
+  rookHealthPermissionsManager.requestPermissions(HealthPermission.all).then((_) {
     // All permissions request sent
   }).catchError((exception) {
     // Error requesting all permissions
 
     final error = switch (exception) {
-      (SDKNotInitializedException it) => 'SDKNotInitializedException: ${it.message}',
-      (UserNotInitializedException it) => 'UserNotInitializedException: ${it.message}',
-      (HealthConnectNotInstalledException it) =>
-      'HealthConnectNotInstalledException: ${it.message}',
-      (DeviceNotSupportedException it) => 'DeviceNotSupportedException: ${it.message}',
       _ => exception.toString(),
     };
   });
