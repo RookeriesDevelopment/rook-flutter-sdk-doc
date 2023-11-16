@@ -438,5 +438,5 @@ Future<void> syncTodayPhysicalEvents() async {
 
 ## Other resources
 
-* See a complete list of rook-sdk-apple-health methods in
-  the [API Reference](https://pub.dev/documentation/rook_sdk_apple_health/latest/)
+* See a complete list of rook-sdk-apple-health methods in the [API Reference](https://pub.dev/documentation/rook_sdk_apple_health/latest/rook_sdk_apple_health/rook_sdk_apple_health-library.html)
+* Download and compile the demo application from our [Repository](https://github.com/RookeriesDevelopment/rook_demo_app_flutter_rook_sdk)

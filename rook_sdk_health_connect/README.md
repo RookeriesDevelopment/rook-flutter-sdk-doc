@@ -701,5 +701,5 @@ Future<void> syncTodayPhysicalEvents() async {
 
 ## Other resources
 
-* See a complete list of rook-sdk-health-connect methods in
-  the [API Reference](https://pub.dev/documentation/rook_sdk_health_connect/latest/)
+* See a complete list of rook-sdk-health-connect methods in the [API Reference](https://pub.dev/documentation/rook_sdk_health_connect/latest/rook_sdk_health_connect/rook_sdk_health_connect-library.html)
+* Download and compile the demo application from our [Repository](https://github.com/RookeriesDevelopment/rook_demo_app_flutter_rook_sdk)
