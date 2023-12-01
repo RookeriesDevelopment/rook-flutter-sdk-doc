@@ -292,6 +292,29 @@ void clearUserID() {
 }
 ```
 
+### Removing registered users
+
+If you want to remove a userID from a data source call `deleteUserFromRook` it will remove the current user from
+HEALTH_CONNECT data source once removed rook servers won't accept any health data from HEALTH_CONNECT.
+
+```dart
+void deleteUser() {
+  rookConfigurationManager.deleteUserFromRook().then((_) {
+    // User deleted from rook
+  }).catchError((exception) {
+    final error = switch (exception) {
+      (SDKNotInitializedException it) =>
+      'SDKNotInitializedException: ${it.message}',
+      (UserNotInitializedException it) =>
+      'UserNotInitializedException: ${it.message}',
+      _ => exception.toString(),
+    };
+
+    // Error deleting user from rook
+  });
+}
+```
+
 #### User timezone
 
 Every time `updateUserID` completes successfully the timezone information will be updated, you can see the result of the

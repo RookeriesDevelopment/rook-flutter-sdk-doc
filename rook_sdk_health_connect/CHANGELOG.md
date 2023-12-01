@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1
+
+* Added `deleteUserFromRook`, this function will remove a user from both server and preferences,
+  see [Removing registered users](README.md#removing-registered-users) for more information.
+
 ## 0.3.0
 
 * Added StepsTracker to extract steps from phones, more information in the [Steps Tracker Documentation](STEPS_TRACKER.md)
