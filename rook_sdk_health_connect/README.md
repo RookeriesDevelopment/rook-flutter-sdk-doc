@@ -34,7 +34,7 @@ This package was developed with the following sdk constraints:
 
 To use this package you'll need to add the following dependencies to your project:
 
-* [rook_sdk_core](https://pub.dev/packages/rook_sdk_core): "^0.0.1"
+* [rook_sdk_core](https://pub.dev/packages/rook_sdk_core): "0.1.0"
 
 ## Getting started
 
@@ -220,8 +220,8 @@ final rookConfigurationManager = HCRookConfigurationManager();
 
 Set a configuration and initialize. The `RookConfiguration` requires the following parameters:
 
-* [clientUUID](https://docs.tryrook.io/docs/Definitions#client_uuid)
-* [clientPassword](https://docsbeta.tryrook.io/docs/Definitions#client_password)
+* [clientUUID](https://docs.tryrook.io/docs/Definitions/#client_uuid)
+* [secretKey](https://docs.tryrook.io/docs/Definitions/#client_secret)
 * [Environment](#environment)
 
 ```dart
@@ -230,8 +230,8 @@ void initialize() {
   kDebugMode ? RookEnvironment.sandbox : RookEnvironment.production;
 
   final rookConfiguration = RookConfiguration(
-    Secrets.clientUUID,
-    Secrets.clientPassword,
+    clientUUID,
+    secretKey,
     environment,
   );
 
