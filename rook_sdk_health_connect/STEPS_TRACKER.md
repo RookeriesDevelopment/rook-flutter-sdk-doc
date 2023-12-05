@@ -207,11 +207,10 @@ void stopStepsTracker() async {
 #### Recommendations
 
 Calling `AndroidStepsTracker.start`/ `AndroidStepsTracker.stop` when the service is active/inactive will do nothing,
-however you can check if the service is
-active with `AndroidStepsTracker.isActive`:
+however you can check if the service is active with `AndroidStepsTracker.isActive`:
 
 ```dart
-void requestPermissions() async {
+void checkStatus() async {
   final isActive = await AndroidStepsTracker.isActive();
 }
 ```
