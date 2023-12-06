@@ -66,6 +66,8 @@ Add HealthKit capability to your Xcode project:
 2. Click on your project file (most cases is Runner) in the Project Navigator.
 3. Click on the "Signing and capabilities" tab.
 4. Click on the "+ Capability" button and select "HealthKit" from the list.
+5. Check the "Background delivery" option (Only if you want to use [StepsTracker](CALORIES_TRACKER.md#ios-configuration)
+   or [CaloriesTracker](CALORIES_TRACKER.md#ios-configuration))
 
 Add HealthKit framework to your Xcode project:
 
@@ -123,7 +125,7 @@ final rookConfigurationManager = AHRookConfigurationManager();
 Set a configuration and initialize. The `RookConfiguration` requires the following parameters:
 
 * [clientUUID](https://docs.tryrook.io/docs/Definitions/#client_uuid)
-* [secretKey](https://docs.tryrook.io/docs/Definitions/#client_secret)
+* [secretKey](https://docs.tryrook.io/docs/Definitions/#secret_key)
 * [Environment](#environment)
 
 ```dart
@@ -136,7 +138,7 @@ void initialize() {
     secretKey,
     environment,
   );
-  
+
   rookConfigurationManager.setConfiguration(rookConfiguration);
 
   rookConfigurationManager.initRook().then((_) {
@@ -155,7 +157,8 @@ void initialize() {
 #### Recommendations
 
 When you initialize with `initRook` the SDK an HTTP request is made, so you should only initialize the sdk once. We
-recommend to code the initialization in the highest level of your widget tree or treat the `AHRookConfigurationManager` as
+recommend to code the initialization in the highest level of your widget tree or treat the `AHRookConfigurationManager`
+as
 a singleton if you are using dependency injection.
 
 ### Update userID
@@ -280,11 +283,11 @@ final rookEventManager = AHRookEventManager();
 To sync any type of summary, you need to provide a date. This date cannot be the current
 day. See the examples below:
 
-| Current date | Provided date | Is valid?                          |
-|--------------|---------------|------------------------------------|
-| 2023-01-08   | 2023-01-08    | No, the date is from today         |
-| 2023-01-08   | 2023-01-07    | Yes, the date is from yesterday    |
-| 2023-01-08   | 2023-01-01    | Yes, the date is 7 days old        |
+| Current date | Provided date | Is valid?                       |
+|--------------|---------------|---------------------------------|
+| 2023-01-08   | 2023-01-08    | No, the date is from today      |
+| 2023-01-08   | 2023-01-07    | Yes, the date is from yesterday |
+| 2023-01-08   | 2023-01-01    | Yes, the date is 7 days old     |
 
 To get health data, call `sync_xxx_summary` and provide a LocalDate instance of the day you want to retrieve the data
 from.
@@ -354,7 +357,7 @@ Future<void> syncSummaries() async {
   };
 
   // Sync for other types of summaries...
-  
+
   // Finally you can call syncPendingSummaries to retry all failed uploads (optional)
   // try {
   //   await rookEventManager.syncPendingSummaries();
@@ -370,11 +373,11 @@ Future<void> syncSummaries() async {
 
 To sync any type of event, you need to provide a date. See the examples below:
 
-| Current date | Provided date | Is valid?                          |
-|--------------|---------------|------------------------------------|
-| 2023-01-08   | 2023-01-08    | Yes, the date is from today        |
-| 2023-01-08   | 2023-01-07    | Yes, the date is from yesterday    |
-| 2023-01-08   | 2023-01-01    | Yes, the date is 7 days old        |
+| Current date | Provided date | Is valid?                       |
+|--------------|---------------|---------------------------------|
+| 2023-01-08   | 2023-01-08    | Yes, the date is from today     |
+| 2023-01-08   | 2023-01-07    | Yes, the date is from yesterday |
+| 2023-01-08   | 2023-01-01    | Yes, the date is 7 days old     |
 
 To get health data, call `sync_xxx_events` and provide a LocalDate instance of the day you want to retrieve the data
 from.
@@ -457,5 +460,7 @@ Future<void> syncTodayPhysicalEvents() async {
 
 ## Other resources
 
-* See a complete list of rook-sdk-apple-health methods in the [API Reference](https://pub.dev/documentation/rook_sdk_apple_health/latest/rook_sdk_apple_health/rook_sdk_apple_health-library.html)
-* Download and compile the demo application from our [Repository](https://github.com/RookeriesDevelopment/rook_demo_app_flutter_rook_sdk)
+* See a complete list of rook-sdk-apple-health methods in
+  the [API Reference](https://pub.dev/documentation/rook_sdk_apple_health/latest/rook_sdk_apple_health/rook_sdk_apple_health-library.html)
+* Download and compile the demo application from
+  our [Repository](https://github.com/RookeriesDevelopment/rook_demo_app_flutter_rook_sdk)

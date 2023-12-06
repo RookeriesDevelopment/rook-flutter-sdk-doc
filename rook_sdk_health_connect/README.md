@@ -221,7 +221,7 @@ final rookConfigurationManager = HCRookConfigurationManager();
 Set a configuration and initialize. The `RookConfiguration` requires the following parameters:
 
 * [clientUUID](https://docs.tryrook.io/docs/Definitions/#client_uuid)
-* [secretKey](https://docs.tryrook.io/docs/Definitions/#client_secret)
+* [secretKey](https://docs.tryrook.io/docs/Definitions/#secret_key)
 * [Environment](#environment)
 
 ```dart
@@ -388,7 +388,7 @@ void checkAvailability() {
 To check permissions call `checkPermissions` and provide a `HealthPermission`, available permissions:
 
 * SLEEP - [Sleep Health](https://docs.tryrook.io/docs/Definitions/#sleep-health-data-pillar) Data Pillar permissions.
-* PHYSICAL - [Physical Health](https://docs.tryrook.io/docs/Definitions/#body-health-data-pillar) Data Pillar
+* PHYSICAL - [Physical Health](https://docs.tryrook.io/docs/Definitions/#physical-health-data-pillar) Data Pillar
   permissions.
 * BODY - [Body Health](https://docs.tryrook.io/docs/Definitions/#body-health-data-pillar) Data Pillar permissions.
 * ALL - All Health Data Pillar permissions.
@@ -416,7 +416,7 @@ void checkPermissions() {
 
 ### Request permissions
 
-To request permissions call `launchPermissionsRequest` providing a `HealthPermission`.
+To request permissions call `requestPermissions` providing a `HealthPermission`.
 
 ```dart
 void requestPermissions() {
