@@ -92,6 +92,11 @@ Go to the main [Initialize](README.md#initialize) and [Update userID](README.md#
 
 ### Steps Tracker Configuration
 
+#### Permissions
+
+To use the `IosStepsTracker` you will need PHYSICAL pillar permissions, go
+to [Request permissions](README.md#request-permissions) to learn how to request permissions.
+
 #### Tracker controls
 
 To start tracking steps call `IosStepsTracker.start` :

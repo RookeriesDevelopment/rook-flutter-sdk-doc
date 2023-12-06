@@ -92,6 +92,12 @@ Go to the main [Initialize](README.md#initialize) and [Update userID](README.md#
 
 ### Calories Tracker Configuration
 
+
+#### Permissions
+
+To use the `IosCaloriesTracker` you will need PHYSICAL pillar permissions, go
+to [Request permissions](README.md#request-permissions) to learn how to request permissions.
+
 #### Tracker controls
 
 To start tracking calories call `IosCaloriesTracker.start` :
