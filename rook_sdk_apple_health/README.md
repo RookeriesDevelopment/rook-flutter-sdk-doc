@@ -1,11 +1,11 @@
-# Rook SDK Health Connect
+# Rook SDK Apple Health
 
-This package enables apps to extract and upload data from Health Connect.
+This package enables apps to extract and upload data from Apple Health.
 
 * This package was developed with our modular packages as a way to simplify their implementation:
     * rook-auth (native)
     * rook-users (native)
-    * rook-health-connect (native)
+    * rook-apple-health (native)
     * rook-transmission (native)
 
 ## Features
@@ -34,7 +34,7 @@ This package was developed with the following sdk constraints:
 
 To use this package you'll need to add the following dependencies to your project:
 
-* [rook_sdk_core](https://pub.dev/packages/rook_sdk_core): "^0.0.1"
+* [rook_sdk_core](https://pub.dev/packages/rook_sdk_core): "0.1.0"
 
 ## Getting started
 
@@ -122,8 +122,8 @@ final rookConfigurationManager = AHRookConfigurationManager();
 
 Set a configuration and initialize. The `RookConfiguration` requires the following parameters:
 
-* [clientUUID](https://docs.tryrook.io/docs/Definitions#client_uuid)
-* [clientPassword](https://docsbeta.tryrook.io/docs/Definitions#client_password)
+* [clientUUID](https://docs.tryrook.io/docs/Definitions/#client_uuid)
+* [secretKey](https://docs.tryrook.io/docs/Definitions/#client_secret)
 * [Environment](#environment)
 
 ```dart
@@ -132,8 +132,8 @@ void initialize() {
   kDebugMode ? RookEnvironment.sandbox : RookEnvironment.production;
 
   final rookConfiguration = RookConfiguration(
-    Secrets.clientUUID,
-    Secrets.clientPassword,
+    clientUUID,
+    secretKey,
     environment,
   );
   
@@ -184,6 +184,25 @@ your app call `clearUserID` (this is optional as any call to `updateUserID` will
 ```dart
 void clearUserID() {
   rookConfigurationManager.clearUserID();
+}
+```
+
+### Removing registered users
+
+If you want to remove a userID from a data source call `deleteUserFromRook` it will remove the current user from
+APPLE_HEALTH data source once removed rook servers won't accept any health data from APPLE_HEALTH.
+
+```dart
+void deleteUser() {
+  rookConfigurationManager.deleteUserFromRook().then((_) {
+    // User deleted from rook
+  }).catchError((exception) {
+    final error = switch (exception) {
+      _ => exception.toString(),
+    };
+
+    // Error deleting user from rook
+  });
 }
 ```
 
@@ -295,7 +314,7 @@ Future<void> syncYesterdaySleepSummary() async {
 
 When you call `sync_xxx_summary`, what happens it's that:
 
-1. Health data is extracted from Health Connect
+1. Health data is extracted from Apple Health
 2. The extracted data is enqueued
 3. The enqueued data is uploaded to ROOK servers.
 4. If success the queued is cleared. Otherwise, the summary is stored.
@@ -384,7 +403,7 @@ Future<void> syncTodayPhysicalEvents() async {
 
 When you call `sync_xxx_events`, what happens it's that:
 
-1. Health data is extracted from Health Connect
+1. Health data is extracted from Apple Health
 2. The extracted data is enqueued
 3. The enqueued data is uploaded to ROOK servers.
 4. If success the queued is cleared. Otherwise, the events is stored.
