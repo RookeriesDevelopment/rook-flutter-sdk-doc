@@ -3,7 +3,6 @@
 This package enables apps to extract and upload data from Apple Health.
 
 * This package was developed with our modular packages as a way to simplify their implementation:
-    * rook-auth (native)
     * rook-users (native)
     * rook-apple-health (native)
     * rook-transmission (native)
