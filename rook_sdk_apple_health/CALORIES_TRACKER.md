@@ -58,6 +58,8 @@ Add HealthKit capability to your Xcode project:
 3. Click on the "Signing and capabilities" tab.
 4. Click on the "+ Capability" button and select "HealthKit" from the list.
 5. Check the "Background delivery" option
+6. Click on the "+ Capability" button and select "Background Modes" from the list.
+7. Check the "Background fetch" option
 
 Add HealthKit framework to your Xcode project:
 
